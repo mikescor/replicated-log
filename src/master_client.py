@@ -4,6 +4,7 @@ from google.protobuf import empty_pb2
 import log_pb2
 import log_pb2_grpc
 
+
 def run():
     message_id = 1
     while True:

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+message MessageReplicationRequest {
+    int32 id = 1;
+    string message = 2;
+}
+
+message MessageReplicationResponse {
+    string message = 1;
+    bool received = 2;
+}
+
+message ReplicatedMessageList {
+    repeated string messages = 1;
+}
+
+service SecondaryLog {
+    rpc replicate_message (MessageReplicationRequest) returns (MessageReplicationResponse);
+    rpc get_messages (google.protobuf.Empty) returns (ReplicatedMessageList);
+}

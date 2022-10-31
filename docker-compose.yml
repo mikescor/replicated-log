@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  master:
+    build: .
+    ports:
+      - 50051:50051
+  
+  secondary-one:
+    build:
+      context: .
+      dockerfile: secondary.Dockerfile
+    ports:
+      - 50052:50051
+  
+  secondary-two:
+    build:
+      context: .
+      dockerfile: secondary.Dockerfile
+    ports:
+      - 50053:50051

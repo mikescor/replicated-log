@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+message LogRequest {
+    int32 id = 1;
+    string message = 2;
+}
+
+message LogResponse {
+    string message = 1;
+    bool received = 2;
+}
+
+message MessageList {
+    repeated string messages = 1;
+}
+
+service Log {
+    rpc send_message (LogRequest) returns (LogResponse);
+    rpc list_messages (google.protobuf.Empty) returns (MessageList);
+}

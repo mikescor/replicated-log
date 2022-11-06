@@ -9,6 +9,7 @@ packages = [{include = "replicated_log"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 grpcio-tools = "^1.50.0"
+pyyaml = "^6.0"
 
 
 [build-system]

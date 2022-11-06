@@ -26,6 +26,7 @@ WORKDIR /service/src
 COPY src/msg_replication_pb2.py .
 COPY src/msg_replication_pb2_grpc.py .
 COPY src/secondary.py .
+COPY src/logging.yaml .
 
 EXPOSE 50051
 CMD ["python", "secondary.py"]

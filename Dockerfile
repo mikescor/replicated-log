@@ -1,25 +1,28 @@
-FROM python:3.10-buster
+FROM python:3.10.6-slim-buster as builder
 
 ARG POETRY_VERSION=1.2.2
 
-ENV PYTHONUNBUFFERED 1
-
+RUN python -m pip install --upgrade pip
+RUN python -m pip install poetry==${POETRY_VERSION}
 RUN mkdir /service
 
 COPY protos/ /service/protos/
-COPY src/server.py service/src/server.py
+COPY pyproject.toml poetry.lock ./
 
-WORKDIR /service/src
+RUN python -m venv /opt \
+    && . /opt/bin/activate \
+    && poetry install --no-root
 
-COPY pyproject.toml .
-COPY poetry.lock .
-COPY .git .git
+FROM python:3.10.6-slim-buster as final
 
-RUN python -m pip install --upgrade pip
-RUN python -m pip install poetry==${POETRY_VERSION}
-RUN poetry config virtualenvs.create false && poetry install --no-cache --no-root
-RUN python -m grpc_tools.protoc -I ../protos --python_out=. --grpc_python_out=. ../protos/log.proto
-RUN python -m grpc_tools.protoc -I ../protos --python_out=. --grpc_python_out=. ../protos/msg_replication.proto
+ENV PYTHONUNBUFFERED=1 \
+    PATH=/opt/bin:$PATH \
+    PYTHONPATH=/opt/lib/python3.10/site-packages:$PYTHONPATH
 
-CMD ["python", "server.py"]
+WORKDIR /service/src/
+
+COPY --from=builder /opt /opt
+COPY /src/ .
+
 EXPOSE 50051
+CMD ["python", "server.py"]

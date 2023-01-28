@@ -5,6 +5,7 @@ import "google/protobuf/empty.proto";
 message LogRequest {
     int32 id = 1;
     string message = 2;
+    optional int32 write_concern = 3;
 }
 
 message LogResponse {

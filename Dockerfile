@@ -4,6 +4,7 @@ ARG POETRY_VERSION=1.2.2
 
 RUN python -m pip install --upgrade pip
 RUN python -m pip install poetry==${POETRY_VERSION}
+RUN poetry config virtualenvs.create false
 RUN mkdir /service
 
 COPY protos/ /service/protos/
@@ -25,4 +26,4 @@ COPY --from=builder /opt /opt
 COPY /src/ .
 
 EXPOSE 50051
-CMD ["python", "server.py"]
+CMD ["python", "master.py"]

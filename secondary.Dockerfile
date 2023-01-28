@@ -4,6 +4,7 @@ ARG POETRY_VERSION=1.2.2
 
 RUN python -m pip install --upgrade pip
 RUN python -m pip install poetry==${POETRY_VERSION}
+RUN poetry config virtualenvs.create false
 RUN mkdir /service
 
 COPY protos/msg_replication.proto /service/protos/
